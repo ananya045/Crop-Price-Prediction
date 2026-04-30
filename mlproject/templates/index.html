@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crop Price Prediction</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f4f4;
+            text-align: center;
+        }
+
+        .box {
+            background: white;
+            padding: 25px;
+            margin: 50px auto;
+            width: 400px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px gray;
+        }
+
+        select, input {
+            width: 90%;
+            padding: 8px;
+            margin: 8px 0;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: green;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: darkgreen;
+        }
+
+        .result {
+            margin-top: 15px;
+            font-size: 18px;
+            color: blue;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="box">
+    <h2>🌾 Crop Price Prediction</h2>
+
+    <form action="/predict/" method="post">
+        {% csrf_token %}
+
+        <!-- Crop -->
+        <label>Crop:</label>
+        <select name="crop" required>
+            {% for crop in crops %}
+                <option value="{{ crop }}">{{ crop }}</option>
+            {% endfor %}
+        </select>
+
+        <!-- State -->
+        <label>State:</label>
+        <select name="state" required>
+            {% for state in states %}
+                <option value="{{ state }}">{{ state }}</option>
+            {% endfor %}
+        </select>
+
+        <!-- Market -->
+        <label>Market:</label>
+        <select name="market" required>
+            {% for market in markets %}
+                <option value="{{ market }}">{{ market }}</option>
+            {% endfor %}
+        </select>
+
+        <!-- Year -->
+        <label>Year:</label>
+        <input type="number" name="year" placeholder="e.g. 2023" required>
+
+        <!-- Month -->
+        <label>Month:</label>
+        <input type="number" name="month" min="1" max="12" placeholder="1-12" required>
+
+        <button type="submit">Predict Price</button>
+    </form>
+
+    {% if prediction_text %}
+        <div class="result">
+            {{ prediction_text }}
+        </div>
+    {% endif %}
+</div>
+
+</body>
+</html>
